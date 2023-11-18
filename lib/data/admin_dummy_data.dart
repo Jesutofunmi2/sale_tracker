@@ -20,7 +20,7 @@ const adminavailableCategories = [
   ),
   Category(
     id: 'c4',
-    title: 'Report',
+    title: 'Sales List',
     color: Colors.amber,
   ),
   Category(

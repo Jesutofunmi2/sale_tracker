@@ -92,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           fontSize: 15.0, fontWeight: FontWeight.bold),
                       decoration: const InputDecoration(
                         prefixIcon: Icon(Icons.lock_clock_sharp),
-                        hintText: "Sales ID",
+                        hintText: "Sales Password",
                       ),
                     ),
                   ),

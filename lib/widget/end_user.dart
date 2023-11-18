@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+import 'package:sale_tracker/screen/approve.dart';
 
 class EndUserWidget extends StatefulWidget {
   const EndUserWidget({Key? key}) : super(key: key);
@@ -17,13 +19,16 @@ class _EndUserWidgetState extends State<EndUserWidget> {
   final _formKey = GlobalKey<FormState>();
   int total = 0;
 
+  final now =  DateTime.now();
+  String formatter = DateFormat('yMd').format(DateTime.now());
+
   _price(kg,  price){
     setState(() {
       total = int.parse(kg) * int.parse(price) ;
     });
   }
 
-  _value(kg,  price, title, type){
+  _value(kg,  price, title, type) async {
     setState(() {
       total = int.parse(kg) * int.parse(price) ;
     });
@@ -31,7 +36,7 @@ class _EndUserWidgetState extends State<EndUserWidget> {
       _formKey.currentState!.save();
       final url = Uri.https(
           'sale-tracker-e4ae0-default-rtdb.firebaseio.com', 'sales-list.json');
-      http.post(
+    final response = await  http.post(
         url,
         headers: {'Content-Type': 'application/json'},
         body: json.encode(
@@ -39,16 +44,19 @@ class _EndUserWidgetState extends State<EndUserWidget> {
             'name': title,
             'price': price,
             'kg': kg,
-            'payment_type': type
+            'payment_type': type,
+            'time': formatter
           },
         ),
       );
+
+       if()
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Processing Data, Saved Successfully'),
         ),
       );
-
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const ApproveScreen(),),);
     }
   }
 
@@ -209,7 +217,7 @@ class _EndUserWidgetState extends State<EndUserWidget> {
               height: 15,
             ),
              Text(
-               "$total",
+               " Total :  $total",
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
