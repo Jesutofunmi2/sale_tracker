@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:sale_tracker/screen/start.dart';
 import 'package:http/http.dart' as http;
+import 'package:sale_tracker/screen/users.dart';
 
 import 'admin_tabScreen.dart';
 
@@ -44,12 +45,23 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           content: Text('Processing Data'),
         ),
       );
+
+      Navigator.push(context, MaterialPageRoute(builder: (context) => const User()));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('New User'),
+        actions: [
+          IconButton(
+            onPressed: (){},
+            icon: const Icon(Icons.add),
+          ),
+        ],
+      ),
       body: Form(
         key: _formKey,
         child: Column(
@@ -216,8 +228,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       )
                     : OutlinedButton.icon(
                         onPressed: () {
-                          _save(userName.text, password.text, phone.text,
-                              email.text, context);
+                          _save(userName.text, password.text, email.text,
+                              phone.text, context);
                         },
                         style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.white,

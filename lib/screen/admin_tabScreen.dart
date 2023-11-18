@@ -35,8 +35,8 @@ class _AdminTabScreenState extends State<AdminTabScreen> {
     Widget activeScreen = const AdminDashBoardScreen();
     var activePageTitle = "Admin DashBoard";
     if(_selectedPageInt == 1){
-      activeScreen = const RegistrationScreen();
-      activePageTitle = "Register";
+      // activeScreen = const RegistrationScreen();
+      // activePageTitle = "Register";
     }else if(_selectedPageInt == 2){
 
     }else if(_selectedPageInt == 3){

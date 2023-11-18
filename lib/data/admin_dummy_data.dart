@@ -30,7 +30,7 @@ const adminavailableCategories = [
   ),
   Category(
     id: 'c6',
-    title: 'Money',
+    title: 'User List',
     color: Colors.green,
   ),
 ];

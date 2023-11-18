@@ -95,17 +95,17 @@ class _ExpensesState extends State<Expenses> {
       );
     }
     return Scaffold(
-      // appBar: AppBar(
-      //   title:  Text(widget.title),
-      //   actions: [
-      //     IconButton(
-      //       onPressed: _showModal,
-      //       icon: const Icon(
-      //         Icons.add,
-      //       ),
-      //     ),
-      //   ],
-      //),
+      appBar: AppBar(
+        title:  Text(widget.title),
+        actions: [
+          IconButton(
+            onPressed: _showModal,
+            icon: const Icon(
+              Icons.add,
+            ),
+          ),
+        ],
+      ),
       body: Column(
         children: [ Chart(expenses: _registerExpense),
           Expanded(child: mainContent)],
