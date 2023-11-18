@@ -11,12 +11,12 @@ const adminavailableCategories = [
   Category(
     id: 'c2',
     title: 'New Sales',
-    color: Colors.red,
+    color: Colors.deepOrangeAccent,
   ),
   Category(
     id: 'c3',
-    title: 'New User',
-    color: Colors.orange,
+    title: 'Add New Sales',
+    color: Colors.blueAccent,
   ),
   Category(
     id: 'c4',

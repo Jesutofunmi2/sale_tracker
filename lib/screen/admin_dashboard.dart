@@ -3,6 +3,7 @@ import 'package:sale_tracker/data/dummy_data.dart';
 import 'package:sale_tracker/model/category.dart';
 import 'package:sale_tracker/screen/end_user.dart';
 import 'package:sale_tracker/screen/expenses.dart';
+import 'package:sale_tracker/screen/new_registration.dart';
 import 'package:sale_tracker/widget/category_grid.dart';
 
 import '../data/admin_dummy_data.dart';
@@ -21,11 +22,11 @@ class AdminDashBoardScreen extends StatelessWidget {
           ),
         ),
       );
-    } else if (category.id == 'c5') {
+    } else if (category.id == 'c1') {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (ctx) => Expenses(title: category.title,),
+          builder: (ctx) => const RegistrationScreen(),
         ),
       );
     }
