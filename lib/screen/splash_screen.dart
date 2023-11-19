@@ -20,11 +20,11 @@ class SplashScreen extends StatelessWidget {
         children: [
           Image.asset(
             'assets/images/logo.png',
-            width: 550,
+            width: 450,
             // color: const Color.fromARGB(150, 255, 255, 255),
           ),
           const SizedBox(
-            height: 40,
+            height: 20,
           ),
           Text(
             "Sales Tracking and Record! ",

@@ -15,7 +15,7 @@ const availableCategories = [
   ),
   Category(
     id: 'c3',
-    title: 'End User',
+    title: 'Sales',
     color: Colors.orange,
   ),
   Category(

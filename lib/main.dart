@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sale_tracker/screen/splash_screen.dart';
@@ -13,6 +14,7 @@ var kDarkColorSchema = ColorScheme.fromSeed(
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp
   ]).then((fn) {

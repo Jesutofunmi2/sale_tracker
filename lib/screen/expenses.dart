@@ -1,11 +1,12 @@
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:sale_tracker/screen/end_user.dart';
+import 'package:http/http.dart' as http;
+import 'package:sale_tracker/screen/new_expense.dart';
 
 import '../model/expense.dart';
-import 'chart.dart';
-import 'expense_list.dart';
-import 'new_expense.dart';
-
+import '../model/sales.dart';
 
 class Expenses extends StatefulWidget {
   const Expenses({super.key, required this.title});
@@ -16,100 +17,106 @@ class Expenses extends StatefulWidget {
 }
 
 class _ExpensesState extends State<Expenses> {
-  final List<Expense> _registerExpense = [
-    Expense(
-        date: DateTime.now(),
-        title: 'Transport',
-        amount: 3500,
-        category: Category.food),
-    Expense(
-        date: DateTime.now(),
-        title: 'Fueling',
-        amount: 3500,
-        category: Category.leisure),
-    Expense(
-        date: DateTime.now(),
-        title: 'Feeding',
-        amount: 3500,
-        category: Category.travel),
-    Expense(
-        date: DateTime.now(),
-        title: 'Recharge Card',
-        amount: 3500,
-        category: Category.work),
-    Expense(
-        date: DateTime.now(),
-        title: 'Booking',
-        amount: 3500,
-        category: Category.food),
-  ];
+  List<Expense> expense =[];
+  void _loadData() async {
+    final url = Uri.https(
+        'sale-tracker-e4ae0-default-rtdb.firebaseio.com', 'expenses-list.json');
 
-  void _showModal() {
-    showModalBottomSheet(
-      //isScrollControlled: true,
-      context: context,
-      builder: (ctx) => NewExpense(onAddExpense: _addExpense),
-    );
-  }
+    final response = await http.get(url);
 
-  void _addExpense(Expense expense) {
+    final Map<String, dynamic> data = json.decode(response.body);
+    final List<Expense> loadExpense =[];
+    for (final item in data.entries){
+      loadExpense.add(Expense(id: item.key, title: item.value['title'], amount: item.value['amount'], today: item.value['date'],),);
+    }
+
     setState(() {
-      _registerExpense.add(expense);
+      expense = loadExpense;
     });
   }
 
-  void _removeExpense(Expense expense) {
-
-    final expenseIndex = _registerExpense.indexOf(expense);
-    setState(() {
-      _registerExpense.remove(expense);
-    });
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
-
-       SnackBar(
-        duration: const Duration(seconds: 3),
-        content: const Text("Record Deleted"),
-        action: SnackBarAction(
-          label: 'Undo',
-          onPressed: () {
-            setState(() {
-              _registerExpense.insert(expenseIndex, expense);
-            });
-          },
-        ),
+  void _addItem() async {
+    await Navigator.of(context).push<Sales>(
+      MaterialPageRoute(
+        builder: (ctx) =>  NewExpense(),
       ),
     );
+    _loadData();
+  }
+
+  void _removeItem(Expense item) {
+    setState(() {
+      expense.remove(item);
+    });
+  }
+
+  @override
+  void initState() {
+    _loadData();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget mainContent = const Center(
-      child: Text("No available content"),
-    );
+    Widget content = const Center(child: Text('No items added yet.'));
 
-    if (_registerExpense.isNotEmpty) {
-      mainContent = ExpensesList(
-        expenses: _registerExpense,
-        onRemoved: _removeExpense,
+    if (expense.isNotEmpty) {
+      content = ListView.builder(
+          itemCount: expense.length,
+          itemBuilder: (ctx, index) =>
+
+              Dismissible(
+                onDismissed: (direction) {
+                  _removeItem(expense[index]);
+                },
+                key: ValueKey(expense[index].id),
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              "${expense[index].title?? ''}",
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
+                            ],
+                        ),
+                        const SizedBox(
+                          height: 4,
+                        ),
+                        Row(
+                          children: [
+                            Text('\# ${expense[index].amount?? ''}'),
+                            const Spacer(),
+                            Row(
+                              children: [
+                                const Icon(Icons.date_range),
+                                Text(expense[index].today?? ''),
+                              ],
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              )
       );
     }
     return Scaffold(
       appBar: AppBar(
-        title:  Text(widget.title),
+        title: const Text('Your Expenses'),
         actions: [
           IconButton(
-            onPressed: _showModal,
-            icon: const Icon(
-              Icons.add,
-            ),
+            onPressed: _addItem,
+            icon: const Icon(Icons.add),
           ),
         ],
       ),
-      body: Column(
-        children: [ Chart(expenses: _registerExpense),
-          Expanded(child: mainContent)],
-      ),
+      body: content,
     );
   }
 }

@@ -15,24 +15,21 @@ class Record extends StatefulWidget {
 
 class _RecordState extends State<Record> {
   List<Sales> sales =[];
-
   void _loadData() async {
     final url = Uri.https(
         'sale-tracker-e4ae0-default-rtdb.firebaseio.com', 'sales-list.json');
 
     final response = await http.get(url);
 
-      final Map<String, dynamic> data = json.decode(response.body);
+     final Map<String, dynamic> data = json.decode(response.body);
      final List<Sales> salesLoad =[];
       for (final item in data.entries){
-         salesLoad.add(Sales(id: item.key, kg: item.value['kg'], name:  item.value['name'], price:  item.value['price'], time:  item.value['item']));
+         salesLoad.add(Sales(id: item.key, kg: item.value['kg'], name:  item.value['name'], price:  item.value['price'], today:  item.value['time']));
       }
 
       setState(() {
         sales = salesLoad;
       });
-
-
   }
 
   void _addItem() async {
@@ -41,7 +38,6 @@ class _RecordState extends State<Record> {
         builder: (ctx) => const EndUser(title:'Add New Sales'),
       ),
     );
-
     _loadData();
   }
 
@@ -73,13 +69,19 @@ class _RecordState extends State<Record> {
               key: ValueKey(sales[index].id),
               child: Card(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "${sales[index].kg?? ''}KG",
-                        style: Theme.of(context).textTheme.titleLarge,
+                      Row(
+                        children: [
+                          Text(
+                            "${sales[index].kg?? ''}KG",
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                          const Spacer(),
+                          Text(sales[index].name?? '', style: Theme.of(context).textTheme.titleLarge,),
+                        ],
                       ),
                       const SizedBox(
                         height: 4,
@@ -90,8 +92,8 @@ class _RecordState extends State<Record> {
                           const Spacer(),
                           Row(
                             children: [
-                              const Icon(Icons.person),
-                              Text(sales[index].name?? ''),
+                              const Icon(Icons.date_range),
+                              Text(sales[index].today?? ''),
                             ],
                           )
                         ],

@@ -3,6 +3,7 @@ import 'package:sale_tracker/data/dummy_data.dart';
 import 'package:sale_tracker/model/category.dart';
 import 'package:sale_tracker/screen/end_user.dart';
 import 'package:sale_tracker/screen/expenses.dart';
+import 'package:sale_tracker/screen/record.dart';
 import 'package:sale_tracker/widget/category_grid.dart';
 
 class DashBoardScreen extends StatelessWidget {
@@ -22,7 +23,14 @@ class DashBoardScreen extends StatelessWidget {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (ctx) => Expenses(title: category.title,),
+          builder: (ctx) => const Expenses(title: "Expenses"),
+        ),
+      );
+    }else if (category.id == 'c6') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (ctx) => const Record(),
         ),
       );
     }

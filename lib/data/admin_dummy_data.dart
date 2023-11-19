@@ -10,7 +10,7 @@ const adminavailableCategories = [
   ),
   Category(
     id: 'c2',
-    title: 'New Sales',
+    title: 'Monthly Calc.',
     color: Colors.deepOrangeAccent,
   ),
   Category(
